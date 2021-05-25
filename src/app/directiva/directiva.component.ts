@@ -8,9 +8,13 @@ export class DirectivaComponent {
   
   listaCursos: string[] = ['TypeScript', 'JavaScript', 'Java', 'c#', 'PHP'];
 
+  habilitar:boolean = true;
+
   constructor() {
+  }
 
-
-   }
+  setHabilitar():void {
+    this.habilitar = (this.habilitar == true) ? false : true;
+  }
 
 }
