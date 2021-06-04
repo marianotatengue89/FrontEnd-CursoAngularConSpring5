@@ -15,9 +15,13 @@ export class FormComponent implements OnInit {
   public cliente: Cliente = new Cliente();
   public titulo: string = "Crear Cliente";
 
+  public errores: string[];
+
   constructor(private clienteService: ClienteService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute) {
+      this.errores = [];
+     }
 
   ngOnInit(): void {
     //console.log(this.cliente);
@@ -41,7 +45,13 @@ export class FormComponent implements OnInit {
     .subscribe( cliente => {
       this.router.navigate(['/clientes']);
       swal.fire(  'Nuevo Cliente',  `Cliente ${cliente.nombre + " " + cliente.apellido} creado con éxito!`,  'success');
-    });
+    },
+    err => {
+      this.errores = err.error.errors as string[];
+      console.error('Codigo del error desde el backend: ' + err.status);
+      console.error(err.error.errors);            
+    }
+    );
   }
 
   public update(): void{
@@ -50,6 +60,11 @@ export class FormComponent implements OnInit {
         this.router.navigate(['/clientes']);
         swal.fire('Cliente Actualizado',  `${json.mensaje}: ${json.cliente.apellido} ${json.cliente.nombre}`, 
         'success');
+      },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.error('Codigo del error desde el backend: ' + err.status);
+        console.error(err.error.errors);            
       }
     )
   }
